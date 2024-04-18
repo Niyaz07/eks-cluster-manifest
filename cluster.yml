@@ -1,0 +1,21 @@
+apiVersion: eksctl.io/v1alpha5
+kind: ClusterConfig
+
+metadata:
+  name: eksdemo
+  region: us-east-1
+
+managedNodeGroups:
+  - name: eks-worker-node
+    instanceType: t3.medium
+    desiredCapacity: 2
+    volumeSize: 8
+    minSize: 2 
+    maxSize: 4 
+
+    iam: # use this block if you wanted the ec2 instance associated with the role
+      withAddonPolicies: 
+        imageBuilder: true # policy for ECR
+        awsLoadBalancerController: true # if you are using AWS application Load balancer then this field is must or else your Ec2 instance don't get register automatically in the Target group
+        autoScaler: true # for autoscaling of Ec2
+        ebs: true # for ebs volume
